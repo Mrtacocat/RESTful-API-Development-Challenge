@@ -1,9 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using Restful_API_Development_Challenge.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.AddDbContext<LibraryContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("LibraryDb")));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

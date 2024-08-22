@@ -8,16 +8,22 @@ public class LibraryContext : DbContext
 {
     public LibraryContext(DbContextOptions<LibraryContext> options) : base(options) { }
 
-    public DbSet<Book> Books { get; set; }
+    public DbSet<Book> Book { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // Configure the model if needed
+        modelBuilder.Entity<Book>().ToTable("book");
+    }
 }
 
 public class Book
 {
-    public int BookId { get; set; }
-    public string Title { get; set; }
-    public string Author { get; set; }
-    public string ISBN { get; set; }
-    public DateTime PublishedDate { get; set; }
-    public string Status { get; set; }
-    public DateTime? BorrrowedUntil { get; set; }
+    public int bookid { get; set; }
+    public string title { get; set; }
+    public string author { get; set; }
+    public string isbn { get; set; }
+    public DateTime publishdate { get; set; }
+    public string status { get; set; }
+    public DateTime? borroweduntil { get; set; }
 }
