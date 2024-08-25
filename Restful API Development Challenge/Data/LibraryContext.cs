@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 
 
+#pragma warning disable CS1591
 public class LibraryContext : DbContext
 {
     public LibraryContext(DbContextOptions<LibraryContext> options) : base(options) { }
@@ -20,10 +21,39 @@ public class LibraryContext : DbContext
 public class Book
 {
     public int bookid { get; set; }
-    public string title { get; set; }
-    public string author { get; set; }
-    public string isbn { get; set; }
-    public DateTime publishdate { get; set; }
-    public string status { get; set; }
-    public DateTime? borroweduntil { get; set; }
+    public string title { get; set; } = string.Empty; // Have to default to empty to avoid null
+    public string author { get; set; } = string.Empty;
+    public string isbn { get; set; } = string.Empty;
+
+    private DateTime _publishdate;
+    public DateTime publishdate
+    {
+        get => _publishdate;
+        set
+        {
+            // Have to enuse it converts to UTC
+            _publishdate = DateTime.SpecifyKind(value, DateTimeKind.Utc);
+        }
+    }
+
+    public string status { get; set; } = string.Empty;
+
+    private DateTime? _borroweduntil;
+    public DateTime? borroweduntil
+    {
+        get => _borroweduntil;
+        set
+        {
+            if (value.HasValue)
+            {
+                // Have to enuse it converts to UTC
+                _borroweduntil = DateTime.SpecifyKind(value.Value, DateTimeKind.Utc);
+            }
+            else
+            {
+                _borroweduntil = null;
+            }
+        }
+    }
 }
+
